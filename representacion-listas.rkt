@@ -147,3 +147,93 @@
 (prim-chip (chip-or))
 (prim-chip (chip-and))
 (prim-chip (chip-not))
+
+
+
+;; Observadores
+
+
+
+;; Predicados
+
+(define simple-circuit?
+  (lambda (lst)
+    (equal? (car lst) 'simple-circuit)
+    )
+)
+
+(define complex-circuit?
+  (lambda (lst)
+    (equal? (car lst) 'complex-circuit)
+    )
+)
+
+
+(define comp-chip?
+  (lambda (lst)
+    (equal? (car lst) 'comp-chip)
+    )
+  )
+
+(define chip-or?
+  (lambda (lst)
+    (equal? (car lst) 'chip-or)
+    )
+  )
+
+
+(define chip-and?
+  (lambda (lst)
+    (equal? (car lst) 'chip-and)
+    )
+  )
+
+
+(define chip-xor?
+  (lambda (lst)
+    (equal? (car lst) 'chip-xor)
+    )
+  )
+
+(define chip-not?
+  (lambda (lst)
+    (equal? (car lst) 'chip-not)
+    )
+  )
+
+
+(define chip-nand?
+  (lambda (lst)
+    (equal? (car lst) 'chip-nand)
+    )
+  )
+
+
+
+(define chip-nor?
+  (lambda (lst)
+    (equal? (car lst) 'chip-nor)
+    )
+  )
+
+(define chip-xnor?
+  (lambda (lst)
+    (equal? (car lst) 'chip-xnor)
+    )
+  )
+
+;; pruebas
+
+;;circuitos
+(define ejemplo8 '(simple-circuit '(a) '(b) 'chip1))
+(define ejemplo9 '(complex-circuit '(simple-circuit '(a) '(b) 'chip1) '((simple-circuit '(c) '(d) 'chip2)) '(a c) '(d)))
+
+;;chips
+(define ejemplo1 '(chip-or))
+(define ejemplo2 '(chip-and))
+(define ejemplo3 '(chip-xor))
+(define ejemplo4 '(chip-not))
+(define ejemplo5 '(chip-nand))
+(define ejemplo6 '(chip-nor))
+(define ejemplo7 '(chip-xnor))
+
