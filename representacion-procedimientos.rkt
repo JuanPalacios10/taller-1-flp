@@ -188,13 +188,6 @@
 
 
 ;; Pruebas
-(chip-or)
-(chip-and)
-(chip-not)
-(chip-xor)
-(chip-nand)
-(chip-nor)
-
 
 ;; Observadores
 
@@ -206,6 +199,7 @@
 )
 
 ;; Pruebas
+
 (define sp (simple-circuit '(a) '(b) 'chip1))
 (simple-circuit? sp)
 
@@ -265,26 +259,6 @@
 
 
 ;; Pruebas
-
-(define cp (comp-chip '(INA INB INC IND) '(OUTA) (simple-circuit '(a b) '(c) 'chip1)))
-(comp-chip? cp)
-(define sp2 (simple-circuit '(a) '(b) 'chip1))
-(simple-circuit? sp2)
-(define cc (complex-circuit '(simple-circuit '(a) '(b) 'chip1) '((simple-circuit '(c) '(d) 'chip2)) '(a c) '(d)))
-(complex-circuit? cc)
-(define co (chip-or))
-(chip-or? co)
-(define ca (chip-and))
-(chip-and? ca)
-(define cx (chip-xor))
-(chip-xor? cx)
-(define cn (chip-nand))
-(chip-nand? cn)
-(define cnr (chip-nor))
-(chip-nor? cnr)
-(define cxn (chip-xnor))
-(chip-xnor? cxn)
-
 
 ;; Extractores
 (define simple-circuit->in
