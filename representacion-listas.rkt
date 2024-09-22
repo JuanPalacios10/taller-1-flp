@@ -17,7 +17,7 @@
 )
 
 ;; Pruebas
-(simple-circuit '(a) '(b) 'chip1)
+
 
 ;; <circuito> := circ_comp <circuito> {<circuito>}+
 ;;                         input {cable}∗
@@ -34,7 +34,6 @@
 )
 
 ;; Pruebas
-(complex-circuit '(simple-circuit '(a) '(b) 'chip1) '((simple-circuit '(c) '(d) 'chip2)) '(a c) '(d))
 
 ;; <chip> := chip (-> {(port)}*)
 ;;                (<- {(port)}*)
@@ -52,7 +51,6 @@
 )
 
 ;; Pruebas
-(comp-chip '(INA INB INC IND) '(OUTA) (simple-circuit '(a b) '(c) 'chip1))
 
 ;;<chip prim> := prim_or
 ;;               chip-or ()
@@ -122,13 +120,6 @@
 )
 
 ;; Pruebas
-(chip-or)
-(chip-and)
-(chip-not)
-(chip-xor)
-(chip-nand)
-(chip-nor)
-(chip-xnor)
 
 ;; <chip> := <chip_prim>
 ;;           prim-chip(chip-prim)
@@ -144,9 +135,6 @@
 )
 
 ;; Pruebas
-(prim-chip (chip-or))
-(prim-chip (chip-and))
-(prim-chip (chip-not))
 
 ;; Observadores
 
@@ -212,18 +200,6 @@
   )
 )
 
-;; pruebas
+;; Pruebas
 
-;;circuitos
-(define ejemplo8 '(simple-circuit '(a) '(b) 'chip1))
-(define ejemplo9 '(complex-circuit '(simple-circuit '(a) '(b) 'chip1) '((simple-circuit '(c) '(d) 'chip2)) '(a c) '(d)))
-
-;;chips
-(define ejemplo1 '(chip-or))
-(define ejemplo2 '(chip-and))
-(define ejemplo3 '(chip-xor))
-(define ejemplo4 '(chip-not))
-(define ejemplo5 '(chip-nand))
-(define ejemplo6 '(chip-nor))
-(define ejemplo7 '(chip-xnor))
 
