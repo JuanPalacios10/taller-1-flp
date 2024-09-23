@@ -5,6 +5,10 @@
 [comp-chip comp-chip-list] [chip-or chip-or-list] [chip-and chip-and-list] [chip-not chip-not-list] [chip-xor chip-xor-list] [chip-nand chip-nand-list] 
 [chip-nor chip-nor-list] [chip-xnor chip-xnor-list] [prim-chip prim-chip-list]))
 
+(require (only-in "representacion-listas.rkt" [simple-circuit simple-circuit-list] [complex-circuit complex-circuit-list] 
+[comp-chip comp-chip-list] [chip-or chip-or-list] [chip-and chip-and-list] [chip-not chip-not-list] [chip-xor chip-xor-list] [chip-nand chip-nand-list] 
+[chip-nor chip-nor-list] [chip-xnor chip-xnor-list] [prim-chip prim-chip-list]))
+
 (define-datatype circuito circuito?
   (simple-circuit (in (list-of symbol?)) (out (list-of symbol?)) (chip chip?))
   (complex-circuit (circ circuito?) (lcircs (list-of circuito?)) (in (list-of symbol?)) (out (list-of symbol?)))
@@ -25,8 +29,6 @@
   (chip_nor)
   (chip_xnor)
 )
-
-
 
 (define evalCirc
   (lambda (cir)
@@ -70,7 +72,95 @@
   )
 )
 
+(define evaluar-circuito
+  (lambda (circ)
+    (cases circuito circ
+      (simple-circuit (in out ch)
+        (simple-circuit-list in out (evaluar-chip ch))
+      )
+      (complex-circuit (circ lcircs in out)
+        (complex-circuit-list (evaluar-circuito circ) (map evaluar-circuito lcircs) in out)
+      )
+    )
+  )
+)
 
+(define evaluar-chip
+  (lambda (ch)
+    (cases chip ch
+      (prim-chip (ch-prim)
+        (prim-chip-list (evaluar-prim ch-prim))
+      )
+      (comp-chip (in out circ)
+        (comp-chip-list in out (evaluar-circuito circ))
+      )
+    )
+  )
+)
 
+(define evaluar-prim
+  (lambda (ch-prim)
+    (cases chip-prim ch-prim
+      (chip_or ()
+        (chip-or-list)
+      )
+      (chip_and ()
+        (chip-and-list)
+      )
+      (chip_not ()
+        (chip-not-list)
+      )
+      (chip_xor ()
+        (chip-xor-list)
+      )
+      (chip_nand ()
+        (chip-nand-list)
+      )
+      (chip_nor ()
+        (chip-nor-list)
+      )
+      (chip_xnor ()
+        (chip-xnor-list)
+      )
+    )
+  )
+)
 
+(define unparser
+  (lambda (comp)
+    (evaluar-circuito comp)
+  )
+)
+
+; (complex-circuit
+;  (simple-circuit
+;   '(m n o p)
+;   '(e f)
+;     (comp-chip
+;       '(INA INB INC IND)
+;       '(OUTE OUTF)
+;         (complex-circuit
+;           (simple-circuit '(a b) '(e) (prim-chip (chip_and)))
+;           (list
+;           (simple-circuit '(c d) '(f) (prim-chip (chip_and)))
+;           )
+;           '(a b c d)
+;           '(e f)
+;         )
+;     )
+;   )
+;   (list
+;     (simple-circuit
+;     '(e f)
+;     '(z)
+;       (comp-chip
+;         '(INE INF)
+;         '(OUTA)
+;         (simple-circuit '(e f) '(g) (prim-chip (chip_or)))
+;       )
+;     )
+;   )
+;   '(m n o p)
+;   '(z)
+; )
 

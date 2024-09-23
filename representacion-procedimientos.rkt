@@ -25,10 +25,6 @@
   )
 )
 
-;; Pruebas
-(simple-circuit '(a) '(b) 'chip1)
-
-
 ;; <circuito> := circ_comp <circuito> {<circuito>}+
 ;;                         input {cable}∗
 ;;                         output {cable}∗
@@ -52,8 +48,24 @@
   )
 )
 
-;; Pruebas
-(complex-circuit '(simple-circuit '(a) '(b) 'chip1) '((simple-circuit '(c) '(d) 'chip2)) '(a c) '(d))
+;; <chip> := <chip_prim>
+;;           prim-chip(chip-prim)
+
+;; prim-chip: chip-prim -> chip
+
+;; Proposito: Construye un chip con un chip primitivo
+
+(define prim-chip
+  (lambda (chip-prim)
+    (lambda (signal)
+    (cond
+        [(= signal 0) 'prim-chip]
+        [(= signal 1) chip-prim]
+        [else (eopl:error "Señal no válida")]
+    )
+    )
+  )
+)
 
 ;; <chip> := chip (-> {(port)}*)
 ;;                (<- {(port)}*)
@@ -77,9 +89,6 @@
     )
   )
 )
-
-;; Pruebas
-(comp-chip '(INA INB INC IND) '(OUTA) (simple-circuit '(a b) '(c) 'chip1))
 
 ;;<chip prim> := prim_or
 ;;               chip-or ()
@@ -139,7 +148,6 @@
   )
 )
 
-
 (define chip-xor
   (lambda ()
     (lambda (signal)
@@ -186,26 +194,25 @@
   )
 )
 
-
-;; Pruebas
-
 ;; Observadores
 
 ;; Predicados;;
+
 (define simple-circuit?
     (lambda (simple-circuit)
         (eqv? ( simple-circuit 0) 'simple-circuit)
     )
 )
 
-;; Pruebas
-
-(define sp (simple-circuit '(a) '(b) 'chip1))
-(simple-circuit? sp)
-
 (define complex-circuit?
     (lambda (complex-circuit)
         (eqv? ( complex-circuit 0) 'complex-circuit)
+    )
+)
+
+(define prim-chip?
+    (lambda (prim-chip)
+        (equal? ( prim-chip 0) 'prim-chip)
     )
 )
 
@@ -257,9 +264,6 @@
     )
 )
 
-
-;; Pruebas
-
 ;; Extractores
 (define simple-circuit->in
     (lambda (simple-circuit)
@@ -300,6 +304,12 @@
 (define complex-circuit->out
     (lambda (complex-circuit)
         (complex-circuit 4)
+    )
+)
+
+(define prim-chip->chip-prim
+    (lambda (prim-chip)
+        (prim-chip 1)
     )
 )
 
@@ -364,8 +374,3 @@
 )
 
 ;; Pruebas
-
-
-
-
-

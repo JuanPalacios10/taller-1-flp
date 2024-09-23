@@ -18,9 +18,6 @@
   )
 )
 
-;; Pruebas
-
-
 ;; <circuito> := circ_comp <circuito> {<circuito>}+
 ;;                         input {cable}∗
 ;;                         output {cable}∗
@@ -31,11 +28,12 @@
 
 (define complex-circuit
   (lambda (circ lcircs in out)
-    (list 'complex-circuit circ lcircs in out)
+    (if (> (length lcircs) 0)
+      (list 'complex-circuit circ lcircs in out)
+      (eopl:error "La lista de circuitos no puede ser vacía")
+    )
   )
 )
-
-;; Pruebas
 
 ;; <chip> := chip (-> {(port)}*)
 ;;                (<- {(port)}*)
@@ -51,8 +49,6 @@
     (list 'comp-chip in out circ)
   )
 )
-
-;; Pruebas
 
 ;;<chip prim> := prim_or
 ;;               chip-or ()
@@ -121,8 +117,6 @@
   )
 )
 
-;; Pruebas
-
 ;; <chip> := <chip_prim>
 ;;           prim-chip(chip-prim)
 
@@ -135,8 +129,6 @@
     (list 'prim-chip chip-prim)
   )
 )
-
-;; Pruebas
 
 ;; Observadores
 
@@ -151,6 +143,12 @@
 (define complex-circuit?
   (lambda (lst)
     (equal? (car lst) 'complex-circuit)
+  )
+)
+
+(define prim-chip?
+  (lambda (lst)
+    (equal? (car lst) 'prim-chip)
   )
 )
 
@@ -201,9 +199,5 @@
     (equal? (car lst) 'chip-xnor)
   )
 )
-
-;; Pruebas
-
-
 
 
