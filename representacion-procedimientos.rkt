@@ -194,6 +194,7 @@
   )
 )
 
+
 ;; Observadores
 
 ;; Predicados;;
@@ -203,6 +204,9 @@
         (eqv? ( simple-circuit 0) 'simple-circuit)
     )
 )
+
+(define sp (simple-circuit '(a) '(b) 'chip1))
+(simple-circuit? sp)
 
 (define complex-circuit?
     (lambda (complex-circuit)
@@ -374,3 +378,35 @@
 )
 
 ;; Pruebas
+
+(define simple-circuit-1 (simple-circuit '(a c) '(b) '(chip-and)))
+(define simple-circuit-2 (simple-circuit '(a b c) '(c d) '(chip-or)))
+(define simple-circuit-3 (simple-circuit '(a) '(b c) '(chip-not)))
+(define simple-circuit-4 (simple-circuit '(a b) '(c d)  '(chip-or)))
+(define simple-circuit-5 (simple-circuit '() '()'(chip-nor)))
+
+;;---------------------------------------------------------------------------
+
+(define complex-circuit-1 (complex-circuit simple-circuit-1 (list simple-circuit-2) '(a) '(b)))
+(define complex-circuit-2 (complex-circuit simple-circuit-2 (list simple-circuit-1 simple-circuit-2) '(x) '(y)))
+(define complex-circuit-3 (complex-circuit complex-circuit-1 (list simple-circuit-1 complex-circuit-2) '(w) '(y z)))
+(define complex-circuit-4 (complex-circuit simple-circuit-4 (list simple-circuit-1)'(a d) '(b)))
+(define complex-circuit-5 (complex-circuit complex-circuit-4 (list simple-circuit-3 simple-circuit-2) '(x y) '(a b)))
+
+;;---------------------------------------------------------------------------------
+
+(define chip-or-1(chip-or))
+(define chip-and-1(chip-and))
+(define chip-nand-1(chip-nand))
+(define chip-xor-1(chip-xor))
+(define chip-nor-1(chip-nor))
+(define chip-xnor-1(chip-xnor))
+(define chip-not-1(chip-not))
+
+;;--------------------------------------------------------------------------------------
+
+(define comp-chip-1 (comp-chip '(a b c) '(d) (list simple-circuit-1)))
+(define comp-chip-2 (comp-chip '(a b) '(c d)(list complex-circuit-2)))
+(define comp-chip-3 (comp-chip '(a) '(b) (list simple-circuit-4)))
+(define comp-chip-4 (comp-chip '( a b c d) '(e f) (list complex-circuit-5 simple-circuit-2)))
+(define comp-chip-5 (comp-chip '(a b c) '(d e f) (list simple-circuit-3)))

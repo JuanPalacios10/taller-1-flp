@@ -80,7 +80,6 @@
     (list 'chip-or)
   )
 )
-
 (define chip-and
   (lambda ()
     (list 'chip-and)
@@ -200,4 +199,126 @@
   )
 )
 
+;;Extractores
 
+(define simple-circuit->in
+  (lambda(simple-circuit)
+      (cadr(simple-circuit))))
+
+(define simple-circuit->out
+  (lambda(simple-circuit)
+      (caddr(simple-circuit))))
+    
+(define simple-circuit->chip
+  (lambda(simple-circuit)
+      (cadddr(simple-circuit))))
+
+;;----------------------------------------------------------------------
+
+(define complex-circuit->circ
+  (lambda(complex-circuit)
+      (cadr(complex-circuit))))
+
+(define complex-circuit->lcircs
+  (lambda(complex-circuit)
+      (caddr(complex-circuit))))
+
+(define complex-circuit->in
+  (lambda(complex-circuit)
+      (cadddr(complex-circuit))))
+
+(define complex-circuit->out
+  (lambda(complex-circuit)
+      ((caadr (cdddr (cdr complex-circuit))))))
+
+;;-------------------------------------------------------------------------------------
+
+(define comp-chip->in
+  (lambda(comp-chip)
+      (cadr(comp-chip))))
+
+(define comp-chip->out
+  (lambda(comp-chip)
+      (caddr(comp-chip))))
+
+(define comp-chip->circ
+  (lambda(comp-chip)
+      (cadddr(comp-chip))))
+
+;;----------------------------------------------------------------------------------------
+
+(define chip-or->chip
+  (lambda (chip-or)
+    (car chip-or))) 
+
+(define chip-and->chip
+  (lambda (chip-and)
+    (car chip-and))) 
+
+(define chip-nand->chip
+  (lambda (chip-nand)
+    (car chip-nand))) 
+
+(define chip-nor->chip
+  (lambda (chip-nor)
+    (car chip-nor))) 
+
+(define chip-not->chip
+  (lambda (chip-not)
+    (car chip-not))) 
+
+(define chip-xnor->chip
+  (lambda (chip-xnor)
+    (car chip-xnor))) 
+
+(define chip-xor->chip
+  (lambda (chip-xor)
+    (car chip-xor))) 
+
+;;--------------------------------------------------------------------------------
+
+(define prim-chip->chip-prim
+  (lambda (prim-chip)
+    (cadr prim-chip)
+  )
+)
+
+
+;; Pruebas
+;;----------------------------------------------------------------------------------------
+
+(define simple-circuit-1 (simple-circuit '(a) '(b) (prim-chip(chip-and))))
+(define simple-circuit-2 (simple-circuit '(a b c) '(c d) (prim-chip(chip-or))))
+(define simple-circuit-3 (simple-circuit '(a) '(b) (prim-chip(chip-not))))
+(define simple-circuit-4 (simple-circuit '(a) '(b)  (prim-chip(chip-or))))
+(define simple-circuit-5 (simple-circuit '() '() (prim-chip(chip-nor))))
+
+;;----------------------------------------------------------------------------------------
+
+(define complex-circuit-1 (complex-circuit simple-circuit-1 (list simple-circuit-2) '(a) '(b)))
+(define complex-circuit-2 (complex-circuit simple-circuit-2 (list simple-circuit-1 simple-circuit-2) '(x) '(y)))
+(define complex-circuit-3 (complex-circuit complex-circuit-1 (list simple-circuit-1 complex-circuit-2) '(w) '(y z)))
+(define complex-circuit-4 (complex-circuit simple-circuit-4 (list simple-circuit-1)'(a d) '(b)))
+(define complex-circuit-5 (complex-circuit complex-circuit-4 (list simple-circuit-3 simple-circuit-2) '(x y) '(a b)))
+
+;;--------------------------------------------------------------------------------------------
+
+(define comp-chip-1 (comp-chip '(a b c) '(d) (list simple-circuit-1)))
+(define comp-chip-2 (comp-chip '(a b) '(c d)(list complex-circuit-2)))
+(define comp-chip-3 (comp-chip '(a) '(b) (list simple-circuit-4)))
+(define comp-chip-4 (comp-chip '( a b c d) '(e f) (list complex-circuit-5 simple-circuit-2)))
+(define comp-chip-5 (comp-chip '(a b c) '(d e f) (list simple-circuit-3)))
+
+;;------------------------------------------------------------------------------------------------
+
+(define chip-or-1(chip-or))
+(define chip-and-1(chip-and))
+(define chip-nand-1(chip-nand))
+(define chip-xor-1(chip-xor))
+(define chip-nor-1(chip-nor))
+(define chip-xnor-1(chip-xnor))
+(define chip-not-1(chip-not))
+
+;;-------------------------------------------------------------------------------------------
+
+(define prim-chip-1(prim-chip chip-and-1))
