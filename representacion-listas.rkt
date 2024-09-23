@@ -2,6 +2,8 @@
 
 ;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 227868665. Juan Carlos Rojas Quintero, 2359358
 
+(provide simple-circuit complex-circuit comp-chip chip-or chip-and chip-not chip-xor chip-nand chip-nor chip-xnor prim-chip)
+
 ;; <circuito> := circ_simple({cable}∗)
 ;;               ({cable}∗)
 ;;               <chip>
@@ -201,5 +203,7 @@
 )
 
 ;; Pruebas
+
+
 
 
