@@ -2,6 +2,8 @@
 
 ;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 227868665. Juan Carlos Rojas Quintero, 2359358
 
+(provide simple-circuit complex-circuit comp-chip chip-or chip-and chip-not chip-xor chip-nand chip-nor chip-xnor prim-chip)
+
 ;; <circuito> := circ_simple({cable}∗)
 ;;               ({cable}∗)
 ;;               <chip>
@@ -26,7 +28,10 @@
 
 (define complex-circuit
   (lambda (circ lcircs in out)
-    (list 'complex-circuit circ lcircs in out)
+    (if (> (length lcircs) 0)
+      (list 'complex-circuit circ lcircs in out)
+      (eopl:error "La lista de circuitos no puede ser vacía")
+    )
   )
 )
 
@@ -44,8 +49,6 @@
     (list 'comp-chip in out circ)
   )
 )
-
-;; Pruebas
 
 ;;<chip prim> := prim_or
 ;;               chip-or ()
@@ -113,8 +116,6 @@
   )
 )
 
-;; Pruebas
-
 ;; <chip> := <chip_prim>
 ;;           prim-chip(chip-prim)
 
@@ -127,8 +128,6 @@
     (list 'prim-chip chip-prim)
   )
 )
-
-;; Pruebas
 
 ;; Observadores
 
@@ -143,6 +142,12 @@
 (define complex-circuit?
   (lambda (lst)
     (equal? (car lst) 'complex-circuit)
+  )
+)
+
+(define prim-chip?
+  (lambda (lst)
+    (equal? (car lst) 'prim-chip)
   )
 )
 
