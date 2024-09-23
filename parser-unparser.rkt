@@ -1,6 +1,6 @@
 #lang eopl
 
-;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 227868665. Juan Carlos Rojas Quintero, 2359358
+;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 2278665. Juan Carlos Rojas Quintero, 2359358
 (require (only-in "representacion-listas.rkt" [simple-circuit simple-circuit-list] [complex-circuit complex-circuit-list] 
 [comp-chip comp-chip-list] [chip-or chip-or-list] [chip-and chip-and-list] [chip-not chip-not-list] [chip-xor chip-xor-list] [chip-nand chip-nand-list] 
 [chip-nor chip-nor-list] [chip-xnor chip-xnor-list] [prim-chip prim-chip-list]))

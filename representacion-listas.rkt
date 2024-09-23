@@ -1,6 +1,6 @@
 #lang eopl
 
-;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 227868665. Juan Carlos Rojas Quintero, 2359358
+;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 2278665. Juan Carlos Rojas Quintero, 2359358
 
 (provide simple-circuit complex-circuit comp-chip chip-or chip-and chip-not chip-xor chip-nand chip-nor chip-xnor prim-chip)
 
@@ -203,47 +203,47 @@
 
 (define simple-circuit->in
   (lambda(simple-circuit)
-      (cadr(simple-circuit))))
+      (cadr simple-circuit)))
 
 (define simple-circuit->out
   (lambda(simple-circuit)
-      (caddr(simple-circuit))))
+      (caddr simple-circuit)))
     
 (define simple-circuit->chip
   (lambda(simple-circuit)
-      (cadddr(simple-circuit))))
+      (cadddr simple-circuit)))
 
 ;;----------------------------------------------------------------------
 
 (define complex-circuit->circ
   (lambda(complex-circuit)
-      (cadr(complex-circuit))))
+      (cadr complex-circuit)))
 
 (define complex-circuit->lcircs
   (lambda(complex-circuit)
-      (caddr(complex-circuit))))
+      (caddr complex-circuit)))
 
 (define complex-circuit->in
   (lambda(complex-circuit)
-      (cadddr(complex-circuit))))
+      (cadddr complex-circuit)))
 
 (define complex-circuit->out
   (lambda(complex-circuit)
-      ((caadr (cdddr (cdr complex-circuit))))))
+    (car (cddddr complex-circuit))))
 
 ;;-------------------------------------------------------------------------------------
 
 (define comp-chip->in
   (lambda(comp-chip)
-      (cadr(comp-chip))))
+      (cadr comp-chip)))
 
 (define comp-chip->out
   (lambda(comp-chip)
-      (caddr(comp-chip))))
+      (caddr comp-chip)))
 
 (define comp-chip->circ
   (lambda(comp-chip)
-      (cadddr(comp-chip))))
+      (cadddr comp-chip)))
 
 ;;----------------------------------------------------------------------------------------
 
@@ -288,10 +288,10 @@
 ;;----------------------------------------------------------------------------------------
 
 (define simple-circuit-1 (simple-circuit '(a) '(b) (prim-chip(chip-and))))
-(define simple-circuit-2 (simple-circuit '(a b c) '(c d) (prim-chip(chip-or))))
+(define simple-circuit-2 (simple-circuit '(a b) '(c) (prim-chip(chip-or))))
 (define simple-circuit-3 (simple-circuit '(a) '(b) (prim-chip(chip-not))))
 (define simple-circuit-4 (simple-circuit '(a) '(b)  (prim-chip(chip-or))))
-(define simple-circuit-5 (simple-circuit '() '() (prim-chip(chip-nor))))
+(define simple-circuit-5 (simple-circuit '(a b) '(e) (prim-chip(chip-nor))))
 
 ;;----------------------------------------------------------------------------------------
 
@@ -302,13 +302,11 @@
 (define complex-circuit-5 (complex-circuit complex-circuit-4 (list simple-circuit-3 simple-circuit-2) '(x y) '(a b)))
 
 ;;--------------------------------------------------------------------------------------------
-
-(define comp-chip-1 (comp-chip '(a b c) '(d) (list simple-circuit-1)))
-(define comp-chip-2 (comp-chip '(a b) '(c d)(list complex-circuit-2)))
-(define comp-chip-3 (comp-chip '(a) '(b) (list simple-circuit-4)))
-(define comp-chip-4 (comp-chip '( a b c d) '(e f) (list complex-circuit-5 simple-circuit-2)))
-(define comp-chip-5 (comp-chip '(a b c) '(d e f) (list simple-circuit-3)))
-
+(define comp-chip-1 (comp-chip '(a b c) '(d) simple-circuit-1))
+(define comp-chip-2 (comp-chip '(a b) '(c d) complex-circuit-2))
+(define comp-chip-3 (comp-chip '(a) '(b) simple-circuit-4))
+(define comp-chip-4 (comp-chip '(a b c) '(e f) simple-circuit-2))
+(define comp-chip-5 (comp-chip '(a b c) '(d e f) simple-circuit-3))
 ;;------------------------------------------------------------------------------------------------
 
 (define chip-or-1(chip-or))

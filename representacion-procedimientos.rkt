@@ -1,6 +1,6 @@
 #lang eopl
 
-;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 227868665. Juan Carlos Rojas Quintero, 2359358
+;; Autores: Juan Miguel Palacios Doncel, 2359321. Yeifer Ronaldo Muñoz Valencia, 2278665. Juan Carlos Rojas Quintero, 2359358
 
 ;; <circuito> := circ_simple({cable}∗)
 ;;               ({cable}∗)
@@ -379,11 +379,11 @@
 
 ;; Pruebas
 
-(define simple-circuit-1 (simple-circuit '(a c) '(b) '(chip-and)))
-(define simple-circuit-2 (simple-circuit '(a b c) '(c d) '(chip-or)))
-(define simple-circuit-3 (simple-circuit '(a) '(b c) '(chip-not)))
-(define simple-circuit-4 (simple-circuit '(a b) '(c d)  '(chip-or)))
-(define simple-circuit-5 (simple-circuit '() '()'(chip-nor)))
+(define simple-circuit-1 (simple-circuit '(a c) '(b) (prim-chip(chip-and))))
+(define simple-circuit-2 (simple-circuit '(a b c) '(c) (prim-chip(chip-or))))
+(define simple-circuit-3 (simple-circuit '(a) '(b c) (prim-chip(chip-not))))
+(define simple-circuit-4 (simple-circuit '(a b) '(c d) (prim-chip(chip-or))))
+(define simple-circuit-5 (simple-circuit '(c d) '(a) (prim-chip(chip-nor))))
 
 ;;---------------------------------------------------------------------------
 
@@ -405,8 +405,10 @@
 
 ;;--------------------------------------------------------------------------------------
 
-(define comp-chip-1 (comp-chip '(a b c) '(d) (list simple-circuit-1)))
-(define comp-chip-2 (comp-chip '(a b) '(c d)(list complex-circuit-2)))
-(define comp-chip-3 (comp-chip '(a) '(b) (list simple-circuit-4)))
-(define comp-chip-4 (comp-chip '( a b c d) '(e f) (list complex-circuit-5 simple-circuit-2)))
-(define comp-chip-5 (comp-chip '(a b c) '(d e f) (list simple-circuit-3)))
+(define comp-chip-1 (comp-chip '(a b c) '(d) simple-circuit-1))
+(define comp-chip-2 (comp-chip '(a b) '(c d) complex-circuit-2))
+(define comp-chip-3 (comp-chip '(a) '(b) simple-circuit-4))
+(define comp-chip-4 (comp-chip '(a b c) '(e f) simple-circuit-2))
+(define comp-chip-5 (comp-chip '(a b c) '(d e f) simple-circuit-3))
+;;--------------------------------------------------------------------------------------
+(define prim-chip-1(prim-chip chip-and-1))
