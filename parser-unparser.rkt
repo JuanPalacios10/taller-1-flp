@@ -36,6 +36,7 @@
         (complex-circuit (evalCirc (cadr cir)) (map evalCirc (caddr cir)) (cadddr cir) (cadddr (cdr cir)))]
     )
   )
+
 )
 
 (define evalChip
@@ -163,3 +164,67 @@
 ; )
 ; )
 
+;; Pruebas para Parser
+
+;;----------------------------------------------------------------------------------------
+
+(define simple-circuit-1 (simple-circuit-list '(a) '(b) (prim-chip-list(chip-and-list))))
+(define simple-circuit-2 (simple-circuit-list '(a b c) '(c d) (prim-chip-list(chip-or-list))))
+(define simple-circuit-3 (simple-circuit-list '(a) '(b) (prim-chip-list(chip-not-list))))
+(define simple-circuit-4 (simple-circuit-list '(a) '(b)  (prim-chip-list(chip-or-list))))
+(define simple-circuit-5 (simple-circuit-list '(a b) '(c d) (prim-chip-list(chip-nor-list))))
+
+;;----------------------------------------------------------------------------------------
+
+(define complex-circuit-1 (complex-circuit-list simple-circuit-1 (list simple-circuit-2) '(a) '(b)))
+(define complex-circuit-2 (complex-circuit-list simple-circuit-2 (list simple-circuit-1 simple-circuit-2) '(x) '(y)))
+(define complex-circuit-3 (complex-circuit-list complex-circuit-1 (list simple-circuit-1 complex-circuit-2) '(w) '(y z)))
+(define complex-circuit-4 (complex-circuit-list simple-circuit-4 (list simple-circuit-1)'(a d) '(b)))
+(define complex-circuit-5 (complex-circuit-list complex-circuit-4 (list simple-circuit-3 simple-circuit-2) '(x y) '(a b)))
+
+;;--------------------------------------------------------------------------------------------
+
+(define comp-chip-1 (comp-chip-list '(a b c) '(d) simple-circuit-1))
+(define comp-chip-2 (comp-chip-list '(a b) '(c d) complex-circuit-2))
+(define comp-chip-3 (comp-chip-list '(a) '(b) simple-circuit-4))
+(define comp-chip-4 (comp-chip-list '( a b c d) '(e f) complex-circuit-5))
+(define comp-chip-5 (comp-chip-list '(a b c) '(d e f) simple-circuit-3))
+
+;;------------------------------------------------------------------------------------------------
+
+(define prim-chip-1(prim-chip-list(chip-and-list)))
+(define chip-prim-1 (chip-nand-list))
+(define chip-prim-2(chip-or-list))
+(define chip-prim-3(chip-xor-list))
+
+;;----------------------------------------------------------------------------------------
+;;Pruebas para  Unparser
+
+(define simple-circuit-Unp-1 (simple-circuit '(a) '(b) (prim-chip(chip_and))))
+(define simple-circuit-Unp-2 (simple-circuit '(a b c) '(c d) (prim-chip(chip_or))))
+(define simple-circuit-Unp-3 (simple-circuit '(a) '(b) (prim-chip(chip_not))))
+(define simple-circuit-Unp-4 (simple-circuit '(a) '(b)  (prim-chip(chip_or))))
+(define simple-circuit-Unp-5 (simple-circuit '(a b) '(c d) (prim-chip(chip_nor))))
+
+;;----------------------------------------------------------------------------------------
+
+(define complex-circuit-Unp-1 (complex-circuit simple-circuit-Unp-1 (list simple-circuit-Unp-2) '(a) '(b)))
+(define complex-circuit-Unp-2 (complex-circuit simple-circuit-Unp-2 (list simple-circuit-Unp-1 simple-circuit-Unp-2) '(x) '(y)))
+(define complex-circuit-Unp-3 (complex-circuit complex-circuit-Unp-1 (list simple-circuit-Unp-1 complex-circuit-Unp-2) '(w) '(y z)))
+(define complex-circuit-Unp-4 (complex-circuit simple-circuit-Unp-4 (list simple-circuit-Unp-1)'(a d) '(b)))
+(define complex-circuit-Unp-5 (complex-circuit complex-circuit-Unp-4 (list simple-circuit-Unp-3 simple-circuit-Unp-2) '(x y) '(a b)))
+
+;;--------------------------------------------------------------------------------------------
+
+(define comp-chip-Unp-1 (comp-chip '(a b c) '(d) simple-circuit-Unp-1))
+(define comp-chip-Unp-2 (comp-chip '(a b) '(c d) complex-circuit-Unp-2))
+(define comp-chip-Unp-3 (comp-chip '(a) '(b) simple-circuit-Unp-4))
+(define comp-chip-Unp-4 (comp-chip '( a b c d) '(e f) complex-circuit-Unp-5))
+(define comp-chip-Unp-5 (comp-chip '(a b c) '(d e f) simple-circuit-Unp-3))
+
+;;------------------------------------------------------------------------------------------------
+
+(define prim-chip-Unp-1(prim-chip(chip_and)))
+(define chip-prim-Unp-1 (chip_nand))
+(define chip-prim-Unp-2(chip_or))
+(define chip-prim-Unp-3(chip_xor))
